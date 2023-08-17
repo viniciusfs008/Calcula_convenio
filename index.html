@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" href="/docs/5.0/assets/img/favicons/apple-touch-icon.png" sizes="180x180">
+    <link rel="icon" href="/docs/5.0/assets/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
+    <link rel="icon" href="/docs/5.0/assets/img/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
+    <link rel="manifest" href="/docs/5.0/assets/img/favicons/manifest.json">
+    <link rel="mask-icon" href="/docs/5.0/assets/img/favicons/safari-pinned-tab.svg" color="#7952b3">
+    <link rel="icon" href="/docs/5.0/assets/img/favicons/favicon.ico">
+    <meta name="theme-color" content="#7952b3">
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <!-- Css -->
+    <link rel="stylesheet" href="css/styles.css">
+
+    <!-- Titulo -->
+    <title>Calculo Convênio</title>
+
+</head>
+
+<body class="d-flex flex-column h-100">
+
+    <header>
+        <!-- Fixed navbar -->
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Calcula Convênio</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#">Inicio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Login</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+      
+    <!-- Conteudo da pagina -->
+    <main class="flex-shrink-0 my-5">
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-12 col-md-6 px-3 mx-auto">
+                    <form class="row">
+                        <h2>Preencha os dados</h2>
+                        <div class="col-12">
+                            <label for="vl_total" class="form-label my-0">Valor total do convênio:</label>
+                            <input type="text" class="form-control" name="vl_total" id="vl_total">
+                        </div>
+                        <div class="col-12">
+                            <label for="par_conc" class="form-label my-0 mt-2">Parcela Concedente:</label>
+                            <input type="text" class="form-control" name="par_conc" id="par_conc">
+                        </div>
+                        <div class="col-12">
+                            <label for="par_conv" class="form-label my-0 mt-2">Parcela Convenente:</label>
+                            <input type="text" class="form-control" name="par_conv" id="par_conv">
+                        </div>
+                        <div class="col-12">
+                            <label for="saldo_conven" class="form-label my-0 mt-2">Saldo do convênio:</label>
+                            <input type="text" class="form-control" name="saldo_conven" id="saldo_conven">
+                        </div>
+                        <div class="row mt-2 mx-0">
+                            <div class="col-auto px-0">
+                                <input class="btn btn-dark" class="" type="button" value="Calcular" onclick="calculaQ(this.form)">
+                            </div>
+                            <div class="col-auto">
+                                <input class="btn btn-dark" type="reset" value="Limpar">
+                            </div>
+                            <hr class="mt-2">
+                        </div>
+
+                        <h2>Resultados</h2>
+                        <div class="col-12">
+                            <label for="por_conc" class="form-label my-0 mt-2">Porcentagem concedente:</label>
+                            <input type="text" class="form-control" name="por_conc" id="por_conc" disabled readonly>
+                        </div>
+                        <div class="col-12">
+                            <label for="por_conv" class="form-label my-0 mt-2">Porcentagem convenente:</label>
+                            <input type="text" class="form-control" name="por_conv" id="por_conv" disabled readonly>
+                        </div>
+                        <div class="col-12">
+                            <label for="saldo_conc" class="form-label my-0 mt-2">Devolução saldo concedente:</label>
+                            <input type="text" class="form-control" name="saldo_conc" id="saldo_conc" disabled readonly>
+                        </div>
+                        <div class="col-12">
+                            <label for="saldo_conv" class="form-label my-0 mt-2">Devolução saldo Porcentagem convenente:</label>
+                            <input type="text" class="form-control" name="saldo_conv" id="saldo_conv" disabled readonly>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script type="text/javascript">
+
+        function formatarNumero(numero, casas) {
+            var partes = numero.toFixed(casas).split('.');
+            var parteInteira = partes[0];
+            var parteDecimal = partes[1];
+            
+            var parteInteiraFormatada = parteInteira.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+            
+            var numeroFormatado = parteInteiraFormatada + ',' + parteDecimal;
+            
+            return numeroFormatado;
+        }
+			
+        function calculaQ(form){
+            var vl_total = eval(form.vl_total.value);
+            var par_conc = eval(form.par_conc.value);
+            var par_conv = eval(form.par_conv.value);
+            var saldo_conven = eval(form.saldo_conven.value);
+
+            var por_conc = ((par_conc * 100) / vl_total);          
+            form.por_conc.value = formatarNumero(por_conc, 2);       
+
+            var por_conv = ((par_conv * 100) / vl_total);
+            form.por_conv.value = formatarNumero(por_conv, 2);
+
+            var saldo_conc = saldo_conven * (por_conc/100);
+            form.saldo_conc.value = formatarNumero(saldo_conc, 2);
+
+            var saldo_conv = saldo_conven * (por_conv/100);
+            form.saldo_conv.value = formatarNumero(saldo_conv, 2);
+          
+        }
+
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+</body>
+
+</html>
